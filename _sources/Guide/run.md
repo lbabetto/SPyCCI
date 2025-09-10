@@ -32,6 +32,7 @@ Generic calculations are implemented as class methods in the various `engines`. 
 |  Transition state search via relaxed surface scan  |  `scan_ts` |  Orca  |
 |  Climbing Image Nudged Elastic Band method  |  `neb_ci` |  Orca  |
 |  Transition state search via Nudged Elastic Band method  |  `neb_ts` |  Orca  |
+|  COSMO-RS calculation of solvation energy | `cosmors` | Orca |
 |  NVT Molecular Dynamics  |  `md_nvt` |  DFTB+  |
 |  Simulated annealing  |  `simulated_annealing` |  DFTB+  |
 
@@ -43,7 +44,7 @@ The only mandatory parameter to be passed is the `System` on which to run the ca
 from spycci.systems import System
 from spycci.engines.xtb import XtbInput
 
-mol = System("water.xyz")
+mol = System.from_xyz("water.xyz")
 xtb = XtbInput()
 
 mol_opt = xtb.opt(mol)
@@ -58,8 +59,8 @@ print(mol_opt)
 :tags: ["remove-input"]
 from spycci.systems import System
 
-mol = System("../example_files/water.xyz")
-mol_opt = System("../example_files/water.json")
+mol = System.from_xyz("../example_files/water.xyz")
+mol_opt = System.from_json("../example_files/water.json")
 
 print(" ~~~ mol: ~~~ ")
 print(mol)
@@ -73,7 +74,7 @@ Alternatively, you can directly update the input `System` with the `inplace` fla
 from spycci.systems import System
 from spycci.engines.xtb import XtbInput
 
-mol = System("water.xyz")
+mol = System.from_xyz("water.xyz")
 xtb = XtbInput()
 
 print(" ~~~ mol before opt: ~~~ ")
@@ -90,8 +91,8 @@ print(mol)
 from spycci.systems import System
 from spycci.engines.xtb import XtbInput
 
-mol1 = System("../example_files/water.xyz")
-mol2 = System("../example_files/water.json")
+mol1 = System.from_xyz("../example_files/water.xyz")
+mol2 = System.from_json("../example_files/water.json")
 
 print(" ~~~ mol before opt: ~~~ ")
 print(mol1)
@@ -125,7 +126,7 @@ The CREST tautomer, conformer, deprotonation, and protonation routines all requi
 from spycci.systems import System
 from spycci.wrappers.crest import conformer_search
 
-mol = System("mymol.xyz")
+mol = System.from_xyz("mymol.xyz")
 conformers = conformer_search(mol)
 
 lowest_energy_conformer = conformers[0]
@@ -137,8 +138,8 @@ The QCG routines are used to create an explicitly solvated cluster, surrounding 
 from spycci.systems import System
 from spycci.wrappers.crest import qcg_grow
 
-solute = System("solute.xyz")
-solvent = System("solvent.xyz")
+solute = System.from_xyz("solute.xyz")
+solvent = System.from_xyz("solvent.xyz")
 
 cluster = qcg_grow(solute, solvent)
 ```
@@ -163,8 +164,8 @@ Given two of these parameters, the third will be calculated accordingly. For exa
 from spycci.systems import System
 from spycci.wrappers.packmol import packmol_cube
 
-solute = System("urea.xyz")
-solvent = System("water.xyz")
+solute = System.from_xyz("urea.xyz")
+solvent = System.from_xyz("water.xyz")
 
 solvated_cube = packmol_cube(solute, solvent, nsolv=50, target_dens=997)
 print(solvated_cube)
@@ -174,6 +175,6 @@ print(solvated_cube)
 :tags: ["remove-input"]
 from spycci.systems import System
 
-solvated_cube = System("../example_files/solvated_cube.json")
+solvated_cube = System.from_json("../example_files/solvated_cube.json")
 print(solvated_cube)
 ```
